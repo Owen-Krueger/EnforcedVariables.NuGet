@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B75856EA-9AF0-459B-ACD1-D93D468C40ED}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{401FF8D3-BE31-443D-8CE9-663EE9F1BFE5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnforcedVariables.NuGet", "src\EnforcedVariables.NuGet\EnforcedVariables.NuGet.csproj", "{21BEC347-73B4-4E14-A875-C8BA102CF04E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnforcedVariables.NuGet.UnitTests", "tests\EnforcedVariables.NuGet.UnitTests\EnforcedVariables.NuGet.UnitTests.csproj", "{3E9CAEFB-FDAC-48D6-9722-94EA2133F124}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4D6920E3-1DB0-46A5-AFFB-6A85A3B86092}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+		README.md = README.md
+		CHANGELOG.md = CHANGELOG.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{21BEC347-73B4-4E14-A875-C8BA102CF04E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21BEC347-73B4-4E14-A875-C8BA102CF04E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21BEC347-73B4-4E14-A875-C8BA102CF04E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21BEC347-73B4-4E14-A875-C8BA102CF04E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E9CAEFB-FDAC-48D6-9722-94EA2133F124}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E9CAEFB-FDAC-48D6-9722-94EA2133F124}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E9CAEFB-FDAC-48D6-9722-94EA2133F124}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E9CAEFB-FDAC-48D6-9722-94EA2133F124}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{21BEC347-73B4-4E14-A875-C8BA102CF04E} = {B75856EA-9AF0-459B-ACD1-D93D468C40ED}
+		{3E9CAEFB-FDAC-48D6-9722-94EA2133F124} = {401FF8D3-BE31-443D-8CE9-663EE9F1BFE5}
+	EndGlobalSection
+EndGlobal
