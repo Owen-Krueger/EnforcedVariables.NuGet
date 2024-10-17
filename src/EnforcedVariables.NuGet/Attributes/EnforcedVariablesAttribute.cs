@@ -10,7 +10,7 @@ public class EnforcedVariablesAttribute : Attribute
     /// Indicates if all properties should be enforced, regardless of if they have the
     /// <see cref="EnforcedVariableAttribute"/> attribute or not.
     /// </summary>
-    public bool EnforceAllChildren { get; set; } = false;
+    public bool EnforceAllChildren { get; set; }
     
     /// <summary>
     /// Instantiates a new <see cref="EnforcedVariablesAttribute"/> attribute.

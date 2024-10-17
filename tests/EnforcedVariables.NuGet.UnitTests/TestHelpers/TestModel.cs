@@ -24,7 +24,7 @@ internal class TestModel
 internal class TestModel2
 {
     [EnforcedVariable("DifferentName1", Required = false)]
-    public string NamedVariable { get; set; }
-    
-    public string VariableEnforcedWithoutTag { get; set; }
+    public string NamedVariable { get; set; } = string.Empty;
+
+    public string VariableEnforcedWithoutTag { get; set; } = string.Empty;
 }
