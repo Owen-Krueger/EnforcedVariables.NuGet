@@ -64,21 +64,25 @@ internal static class EnforcedVariableUtilities
     private static List<string> GetMissingVariables(IConfiguration configuration, object variables)
     {
         List<string> missingProperties = [];
+        var classAttribute = variables.GetType().GetCustomAttribute<EnforcedVariablesAttribute>();
+        var enforceAllChildren = classAttribute is not null && classAttribute.EnforceAllChildren;
+        
         foreach (var property in variables.GetType().GetProperties())
         {
             var attribute = property.GetCustomAttribute<EnforcedVariableAttribute>();
-            if (attribute is null)
+            if (attribute is null && !enforceAllChildren)
             {
-                continue;
+                continue; // No need to check properties without the `EnforcedVariables` attribute.
             }
             
-            var variableName = attribute.Name ?? property.Name;
+            var variableName = attribute?.Name ?? property.Name;
             if (configuration[variableName] is not null)
             {
-                continue;
+                continue; // Variable is present in the `IConfiguration`.
             }
             
-            if (attribute.Required)
+            // Variable is missing.
+            if (attribute is null || attribute.Required)
             {
                 missingProperties.Add(variableName);
             }

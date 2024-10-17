@@ -4,7 +4,7 @@ namespace EnforcedVariables.Tests.TestHelpers;
 
 internal static class ConfigurationHelper
 {
-    internal static IConfiguration GetConfiguration(bool includeRequired, bool includeOptional)
+    internal static IConfiguration GetConfiguration(bool includeRequired, bool includeOptional, bool includeModel2Variables)
     {
         var environmentVariables = new Dictionary<string, string>();
         
@@ -18,6 +18,11 @@ internal static class ConfigurationHelper
         {
             environmentVariables.Add("NotRequiredUnNamedVariable", string.Empty);
             environmentVariables.Add("DifferentName2", string.Empty);
+        }
+
+        if (includeModel2Variables)
+        {
+            environmentVariables.Add("VariableEnforcedWithoutTag", string.Empty);
         }
 
         return new ConfigurationBuilder()

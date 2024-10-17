@@ -10,7 +10,7 @@ public class EnforcedVariablesConfigurationExtensionTests
     [TestCase(false)]
     public void EnforceVariables_VariablesFound_NoExceptionThrown(bool includeOptional)
     {
-        var configuration = ConfigurationHelper.GetConfiguration(true, includeOptional);
+        var configuration = ConfigurationHelper.GetConfiguration(true, includeOptional, false);
         
         Assert.DoesNotThrow(() => configuration.EnforceVariables<TestModel>());
     }
@@ -19,7 +19,7 @@ public class EnforcedVariablesConfigurationExtensionTests
     [TestCase(false)]
     public void EnforceVariables_RequiredVariablesNotFound_MissingVariablesExceptionThrown(bool includeOptional)
     {
-        var configuration = ConfigurationHelper.GetConfiguration(false, includeOptional);
+        var configuration = ConfigurationHelper.GetConfiguration(false, includeOptional, false);
         
         Assert.Throws<MissingVariablesException>(() => configuration.EnforceVariables<TestModel>());
     }
@@ -28,7 +28,7 @@ public class EnforcedVariablesConfigurationExtensionTests
     [TestCase(false)]
     public void EnforceVariables_TypeParameterVariablesFound_NoExceptionThrown(bool includeOptional)
     {
-        var configuration = ConfigurationHelper.GetConfiguration(true, includeOptional);
+        var configuration = ConfigurationHelper.GetConfiguration(true, includeOptional, false);
         
         Assert.DoesNotThrow(() => configuration.EnforceVariables(typeof(TestModel)));
     }
@@ -37,7 +37,7 @@ public class EnforcedVariablesConfigurationExtensionTests
     [TestCase(false)]
     public void EnforceVariables_TypeParameterRequiredVariablesNotFound_MissingVariablesExceptionThrown(bool includeOptional)
     {
-        var configuration = ConfigurationHelper.GetConfiguration(false, includeOptional);
+        var configuration = ConfigurationHelper.GetConfiguration(false, includeOptional, false);
         
         Assert.Throws<MissingVariablesException>(() => configuration.EnforceVariables(typeof(TestModel)));
     }

@@ -12,7 +12,7 @@ public class EnforcedVariablesHealthCheckTests
     public async Task EnforcedVariablesHealthCheck_VariablesPresent_Healthy()
     {
         var services = new ServiceCollection();
-        var configuration = ConfigurationHelper.GetConfiguration(true, true);
+        var configuration = ConfigurationHelper.GetConfiguration(true, true, true);
         services.AddEnforcedVariableClasses(configuration);
         var provider = services.BuildServiceProvider();
 
@@ -26,7 +26,7 @@ public class EnforcedVariablesHealthCheckTests
     public async Task EnforcedVariablesHealthCheck_VariablesMissing_Unhealthy()
     {
         var services = new ServiceCollection();
-        var configuration = ConfigurationHelper.GetConfiguration(false, false);
+        var configuration = ConfigurationHelper.GetConfiguration(false, false, false);
         services.AddEnforcedVariableClasses(configuration);
         var provider = services.BuildServiceProvider();
 

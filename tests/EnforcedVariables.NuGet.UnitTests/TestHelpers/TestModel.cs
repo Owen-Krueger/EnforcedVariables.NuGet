@@ -19,3 +19,12 @@ internal class TestModel
 
     public string IgnoredProperty { get; set; } = string.Empty;
 }
+
+[EnforcedVariables(true)]
+internal class TestModel2
+{
+    [EnforcedVariable("DifferentName1", Required = false)]
+    public string NamedVariable { get; set; }
+    
+    public string VariableEnforcedWithoutTag { get; set; }
+}

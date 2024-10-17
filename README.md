@@ -11,7 +11,7 @@ This package provides attributes to decorate classes/structs and properties, as 
 
 This package provides two attributes that can be used.
 
-`EnforcedVariables` can be added to a class or struct to indicate that it contains variables that should be verified. Primarily used for the `IServiceCollection.AddEnforcedVariableClasses` method.
+`EnforcedVariables` can be added to a class or struct to indicate that it contains variables that should be verified. Primarily used for the `IServiceCollection.AddEnforcedVariableClasses` method and with health checks.
 
 `EnforcedVariable` can be applied to a property to indicate that it represents a variable present in an `IConfiguration`.
 
