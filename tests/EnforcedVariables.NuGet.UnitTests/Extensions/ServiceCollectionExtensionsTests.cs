@@ -21,35 +21,78 @@ public class ServiceCollectionExtensionsTests
     
     [TestCase(true)]
     [TestCase(false)]
-    public void AddVariables_VariablesFound_VariablesAddedAsSingleton(bool includeOptional)
+    public void AddEnforcedVariables_VariablesFound_VariablesAddedAsSingleton(bool includeOptional)
     {
         var services = new ServiceCollection();
         var configuration = ConfigurationHelper.GetConfiguration(true, includeOptional);
         
-        Assert.DoesNotThrow(() => services.AddVariables<TestModel>(configuration));
+        Assert.DoesNotThrow(() => services.AddEnforcedVariables<TestModel>(configuration));
         var provider = services.BuildServiceProvider();
         Assert.DoesNotThrow(() => provider.GetRequiredService<TestModel>());
     }
     
     [TestCase(true)]
     [TestCase(false)]
-    public void AddVariables_RequiredVariablesNotFound_MissingVariablesExceptionThrown(bool includeOptional)
+    public void AddEnforcedVariables_RequiredVariablesNotFound_MissingVariablesExceptionThrown(bool includeOptional)
     {
         var services = new ServiceCollection();
         var configuration = ConfigurationHelper.GetConfiguration(false, includeOptional);
         
-        Assert.Throws<MissingVariablesException>(() => services.AddVariables<TestModel>(configuration));
+        Assert.Throws<MissingVariablesException>(() => services.AddEnforcedVariables<TestModel>(configuration, true));
     }
     
     [TestCase(true)]
     [TestCase(false)]
-    public void AddVariables_DontThrowOnMissing_SingletonNotAdded(bool includeOptional)
+    public void AddEnforcedVariables_DontThrowOnMissing_SingletonNotAdded(bool includeOptional)
     {
         var services = new ServiceCollection();
         var configuration = ConfigurationHelper.GetConfiguration(false, includeOptional);
         
-        Assert.DoesNotThrow(() => services.AddVariables<TestModel>(configuration, false));
+        Assert.DoesNotThrow(() => services.AddEnforcedVariables<TestModel>(configuration));
         var provider = services.BuildServiceProvider();
         Assert.Throws<InvalidOperationException>(() => provider.GetRequiredService<TestModel>());
+    }
+    
+    [TestCase(true)]
+    [TestCase(false)]
+    public void AddEnforcedVariables_TypeParameterVariablesFound_VariablesAddedAsSingleton(bool includeOptional)
+    {
+        var services = new ServiceCollection();
+        var configuration = ConfigurationHelper.GetConfiguration(true, includeOptional);
+        
+        Assert.DoesNotThrow(() => services.AddEnforcedVariables(configuration, typeof(TestModel)));
+        var provider = services.BuildServiceProvider();
+        Assert.DoesNotThrow(() => provider.GetRequiredService<TestModel>());
+    }
+    
+    [TestCase(true)]
+    [TestCase(false)]
+    public void AddEnforcedVariables_TypeParameterRequiredVariablesNotFound_MissingVariablesExceptionThrown(bool includeOptional)
+    {
+        var services = new ServiceCollection();
+        var configuration = ConfigurationHelper.GetConfiguration(false, includeOptional);
+        
+        Assert.Throws<MissingVariablesException>(() => services.AddEnforcedVariables(configuration, typeof(TestModel), true));
+    }
+    
+    [TestCase(true)]
+    [TestCase(false)]
+    public void AddEnforcedVariables_TypeParameterDontThrowOnMissing_SingletonNotAdded(bool includeOptional)
+    {
+        var services = new ServiceCollection();
+        var configuration = ConfigurationHelper.GetConfiguration(false, includeOptional);
+        
+        Assert.DoesNotThrow(() => services.AddEnforcedVariables(configuration, typeof(TestModel)));
+        var provider = services.BuildServiceProvider();
+        Assert.Throws<InvalidOperationException>(() => provider.GetRequiredService<TestModel>());
+    }
+
+    [Test]
+    public void AddEnforcedVariables_NonClassTypeProvided_MissingVariablesExceptionThrown()
+    {
+        var services = new ServiceCollection();
+        var configuration = ConfigurationHelper.GetConfiguration(false, false);
+        
+        Assert.Throws<MissingVariablesException>(() => services.AddEnforcedVariables(configuration, typeof(int), true));
     }
 }

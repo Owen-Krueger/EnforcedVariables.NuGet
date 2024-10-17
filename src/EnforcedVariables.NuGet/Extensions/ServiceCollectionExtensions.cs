@@ -56,8 +56,8 @@ public static class ServiceCollectionExtensions
     /// Indicates any missing variables not found in the <see cref="IConfiguration"/> (if <see cref="throwOnMissing"/>
     /// is true).
     /// </exception>
-    public static IServiceCollection AddVariables<TClass>(this IServiceCollection services, 
-        IConfiguration configuration, bool throwOnMissing = true) where TClass : class, new() =>
+    public static IServiceCollection AddEnforcedVariables<TClass>(this IServiceCollection services, 
+        IConfiguration configuration, bool throwOnMissing = false) where TClass : class, new() =>
             EnforcedVariableUtilities.EnforceVariables(services, configuration, typeof(TClass), throwOnMissing, true);
 
     /// <summary>
@@ -78,7 +78,7 @@ public static class ServiceCollectionExtensions
     /// Indicates any missing variables not found in the <see cref="IConfiguration"/> (if <see cref="throwOnMissing"/>
     /// is true).
     /// </exception>
-    public static IServiceCollection EnforceVariables(this IServiceCollection services, IConfiguration configuration,
-        Type classType, bool throwOnMissing = true) => 
+    public static IServiceCollection AddEnforcedVariables(this IServiceCollection services, IConfiguration configuration,
+        Type classType, bool throwOnMissing = false) => 
         EnforcedVariableUtilities.EnforceVariables(services, configuration, classType, throwOnMissing, true);
 }

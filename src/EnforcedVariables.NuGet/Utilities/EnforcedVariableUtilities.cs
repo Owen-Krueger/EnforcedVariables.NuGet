@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using EnforcedVariables.Attributes;
 using EnforcedVariables.Exceptions;
+using EnforcedVariables.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -35,13 +36,10 @@ internal static class EnforcedVariableUtilities
     internal static IServiceCollection EnforceVariables(IServiceCollection services, IConfiguration configuration,
         Type classType, bool throwOnMissing, bool addSingleton)
     {
-        var variables = Activator.CreateInstance(classType);
-        switch (variables)
+        var variables = CreateInstance(classType, throwOnMissing);
+        if (variables is null)
         {
-            case null when throwOnMissing:
-                throw new MissingVariablesException($"Failed to create {classType} type.");
-            case null:
-                return services;
+            return services;
         }
 
         var missingProperties = GetMissingVariables(configuration, variables);
@@ -74,7 +72,7 @@ internal static class EnforcedVariableUtilities
                 continue;
             }
             
-            var variableName = attribute.VariableName ?? property.Name;
+            var variableName = attribute.Name ?? property.Name;
             if (configuration[variableName] is not null)
             {
                 continue;
@@ -87,5 +85,29 @@ internal static class EnforcedVariableUtilities
         }
 
         return missingProperties;
+    }
+
+    /// <summary>
+    /// Creates an object of type <see cref="classType"/> if class or struct.
+    /// If failed, throws <see cref="MissingVariablesException"/> (if `throwOnMissing` is true) or null.
+    /// </summary>
+    private static object? CreateInstance(Type classType, bool throwOnMissing)
+    {
+        switch (classType.IsClassOrStruct())
+        {
+            case false when throwOnMissing:
+                throw new MissingVariablesException($"{classType} is not type of class or struct.");
+            case false:
+                return null;
+        }
+        
+        var variables = Activator.CreateInstance(classType);
+
+        return variables switch
+        {
+            null when throwOnMissing => throw new MissingVariablesException($"Failed to create {classType} type."),
+            null => null,
+            _ => variables
+        };
     }
 }

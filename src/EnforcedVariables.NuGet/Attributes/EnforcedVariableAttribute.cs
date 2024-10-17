@@ -10,7 +10,7 @@ public class EnforcedVariableAttribute : Attribute
     /// <summary>
     /// The name of the variable. If null, the name is assumed to be the same as the property name.
     /// </summary>
-    public string? VariableName { get; set; }
+    public string? Name { get; set; }
 
     /// <summary>
     /// Whether the variable is required prior to application startup. Defaults to true.
@@ -25,8 +25,8 @@ public class EnforcedVariableAttribute : Attribute
     /// <summary>
     /// Instantiates a new <see cref="EnforcedVariablesAttribute"/> attribute, with the name of a variable.
     /// </summary>
-    public EnforcedVariableAttribute(string variableName)
+    public EnforcedVariableAttribute(string name)
     {
-        VariableName = variableName;
+        Name = name;
     }
 }

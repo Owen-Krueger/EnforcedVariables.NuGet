@@ -26,7 +26,7 @@ public class EnforcedVariablesConfigurationExtensionTests
     
     [TestCase(true)]
     [TestCase(false)]
-    public void EnforceVariables_TypeProvidedVariablesFound_NoExceptionThrown(bool includeOptional)
+    public void EnforceVariables_TypeParameterVariablesFound_NoExceptionThrown(bool includeOptional)
     {
         var configuration = ConfigurationHelper.GetConfiguration(true, includeOptional);
         
@@ -35,7 +35,7 @@ public class EnforcedVariablesConfigurationExtensionTests
     
     [TestCase(true)]
     [TestCase(false)]
-    public void EnforceVariables_TypeProvidedRequiredVariablesNotFound_MissingVariablesExceptionThrown(bool includeOptional)
+    public void EnforceVariables_TypeParameterRequiredVariablesNotFound_MissingVariablesExceptionThrown(bool includeOptional)
     {
         var configuration = ConfigurationHelper.GetConfiguration(false, includeOptional);
         

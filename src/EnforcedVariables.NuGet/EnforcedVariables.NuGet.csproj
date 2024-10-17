@@ -11,6 +11,8 @@
         <Description>For enforcing variables are present and resolvable prior to starting up applications.</Description>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageProjectUrl>https://github.com/Owen-Krueger/EnforceVariables</PackageProjectUrl>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageTags>Variables,Asp.Net,ServiceCollection,HealthCheck</PackageTags>
         <RepositoryUrl>https://github.com/Owen-Krueger/EnforceVariables</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
