@@ -7,19 +7,30 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+    
+env:
+  BUILD_CONFIG: 'Release'
+  SOLUTION: 'EnforcedVariables.NuGet.sln'
+  DOTNET_VERSION: '8.0.x'
 
 jobs:
-  build:
-
-    env:
-      BUILD_CONFIG: 'Release'
-      SOLUTION: 'EnforcedVariables.NuGet.sln'
-
+  setup:
     runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup .NET 8.0
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+  
+  build:
+    runs-on: ubuntu-latest
+    needs: setup
 
     steps:
-      - uses: actions/checkout@v4
-
       - name: Get Build Version
         run: |
           Import-Module .\build\GetBuildVersion.psm1
@@ -27,27 +38,29 @@ jobs:
           $version = GetBuildVersion -VersionString $Env:GITHUB_REF
           echo "BUILD_VERSION=$version" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf-8 -Append
         shell: pwsh
-
-      - name: Setup NuGet
-        uses: NuGet/setup-nuget@v2.0.0
-
+        
       - name: Restore dependencies
-        run: nuget restore $SOLUTION
-
-      - name: Setup .NET 8.0
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 8.0.x
-
-      - name: Restore dependencies
-        run: dotnet restore $SOLUTION
+        run: nuget restore ${{ env.SOLUTION }}
 
       - name: Build
-        run: dotnet build $SOLUTION --configuration $BUILD_CONFIG --p:Version=$BUILD_VERSION --no-restore
+        run: dotnet build ${{ env.SOLUTION }} --configuration ${{ env.BUILD_CONFIG }} --p:Version=$BUILD_VERSION --no-restore
 
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    
+    steps:
       - name: Test
-        run: dotnet test /p:Configuration=$BUILD_CONFIG --no-restore --no-build --verbosity normal
-
+        run: dotnet test /p:Configuration=${{ env.BUILD_CONFIG }} --no-restore --no-build --verbosity normal
+      
+  publish:
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    needs: build
+    
+    steps:
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2.0.0
+        
       - name: Publish
-        if: startsWith(github.ref, 'refs/tags/')
-        run: nuget push **\*.nupkg -Source 'https://api.nuget.org/v3/index.json' -ApiKey ${{secrets.NUGET_API_KEY}}
+        run: nuget push **\*.nupkg -Source 'https://api.nuget.org/v3/index.json' -ApiKey ${{ secrets.NUGET_API_KEY }}
