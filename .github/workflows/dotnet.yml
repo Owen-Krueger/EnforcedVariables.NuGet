@@ -33,6 +33,7 @@ jobs:
     steps:
       - name: Get Version
         run: |
+          ls
           VERSION=$(grep -oPm1 "(?<=<Version>)[^<]+" src/EnforcedVariables.NuGet/EnforcedVariables.NuGet.csproj)
           echo "Version: $VERSION"
           echo "VERSION=$VERSION" >> $GITHUB_ENV
