@@ -46,6 +46,10 @@ public class TestModel
     // Absence of this variable will NOT result in an error.
     [EnforcedVariable("DifferentName2", Required = false)]
     public string NotRequiredNamedVariable { get; set; } = string.Empty;
+    
+    // Will check for "Variable" inside of the "Section" section of the configuration.
+    [EnforceVariable("Section__Variable"]
+    public string SectionVariable { get; set; } = string.Empty;
 
     // Will NOT check if configuration contains 'IgnoredProperty'
     // Absence of this variable will NOT result in an error.

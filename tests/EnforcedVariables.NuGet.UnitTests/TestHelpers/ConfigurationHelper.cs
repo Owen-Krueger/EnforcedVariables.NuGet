@@ -10,19 +10,22 @@ internal static class ConfigurationHelper
         
         if (includeRequired)
         {
-            environmentVariables.Add("UnNamedVariable", string.Empty);
-            environmentVariables.Add("DifferentName1", string.Empty);
+            environmentVariables.Add("UnNamedVariable", "UnNamedVariableValue");
+            environmentVariables.Add("DifferentName1", "DifferentName1Value");
+            environmentVariables.Add("Section:Variable", "SectionVariableValue");
+            environmentVariables.Add("Section:InnerSection:OneMoreSection:Variable", "DeepSectionVariableValue");;
+            environmentVariables.Add("IntegerValue", "42");
         }
         
         if (includeOptional)
         {
-            environmentVariables.Add("NotRequiredUnNamedVariable", string.Empty);
-            environmentVariables.Add("DifferentName2", string.Empty);
+            environmentVariables.Add("NotRequiredUnNamedVariable", "NotRequiredUnNamedVariableValue");
+            environmentVariables.Add("DifferentName2", "DifferentName2Value");
         }
 
         if (includeModel2Variables)
         {
-            environmentVariables.Add("VariableEnforcedWithoutTag", string.Empty);
+            environmentVariables.Add("VariableEnforcedWithoutTag", "VariableEnforcedWithoutTagValue");
         }
 
         return new ConfigurationBuilder()

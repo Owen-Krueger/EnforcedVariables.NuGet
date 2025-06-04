@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.ComponentModel;
+using System.Reflection;
 using EnforcedVariables.Attributes;
 using EnforcedVariables.Exceptions;
 using EnforcedVariables.Extensions;
@@ -49,7 +50,7 @@ internal static class EnforcedVariableUtilities
             throw new MissingVariablesException(missingProperties);
         }
         
-        if (addSingleton && missingProperties.Count == 0)
+        if (addSingleton && missingProperties.Count is 0)
         {
             services.AddSingleton(classType, variables);
         }
@@ -67,6 +68,7 @@ internal static class EnforcedVariableUtilities
         var classAttribute = variables.GetType().GetCustomAttribute<EnforcedVariablesAttribute>();
         var enforceAllChildren = classAttribute is not null && classAttribute.EnforceAllChildren;
         
+        // ReSharper disable once LoopCanBeConvertedToQuery
         foreach (var property in variables.GetType().GetProperties())
         {
             var attribute = property.GetCustomAttribute<EnforcedVariableAttribute>();
@@ -76,12 +78,13 @@ internal static class EnforcedVariableUtilities
             }
             
             var variableName = attribute?.Name ?? property.Name;
-            if (configuration[variableName] is not null)
+            var variableValue = GetVariableValue(variableName, configuration);
+            if (ConvertType(property, variableValue, variables))
             {
-                continue; // Variable is present in the `IConfiguration`.
+                continue;
             }
-            
-            // Variable is missing.
+
+            // Variable is missing or didn't resolve.
             if (attribute is null || attribute.Required)
             {
                 missingProperties.Add(variableName);
@@ -89,6 +92,56 @@ internal static class EnforcedVariableUtilities
         }
 
         return missingProperties;
+    }
+
+    /// <summary>
+    /// Checks if the variable exists in the configuration. If within a config section, recursively checks the section.
+    /// </summary>
+    private static string? GetVariableValue(string variableName, IConfiguration configuration)
+    {
+        var value = configuration[variableName];
+        if (value is not null)
+        {
+            return value;
+        }
+
+        if (!variableName.Contains("__"))
+        {
+            return null;
+        }
+
+        // Check for config section. We force the split to only have a count of 2 to handle deep nesting.
+        // For example "A__B__C" will be split into ["A", "B__C"], which would then be handled recursively.
+        var parts = variableName.Split("__", 2);
+        if (parts.Length < 2) // Parts should at least have the section and variable name. This should always be true.
+        {
+            return null;
+        }
+
+        var section = configuration.GetSection(parts[0]);
+
+        // ReSharper disable once TailRecursiveCall
+        return !section.Exists() ? null : GetVariableValue(parts[1], section);
+    }
+
+    private static bool ConvertType(PropertyInfo? property, string? variableValue, object variables)
+    {
+        if (variableValue is null || property is null)
+        {
+            return false;
+        }
+
+        try
+        {
+            var converter = TypeDescriptor.GetConverter(property.PropertyType);
+            var convertedValue = converter.ConvertFromString(variableValue);
+            property.SetValue(variables, convertedValue);
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
     }
 
     /// <summary>

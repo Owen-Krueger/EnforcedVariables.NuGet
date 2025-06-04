@@ -1,3 +1,8 @@
+# 1.1.0 (2025-06-04)
+## Changes
+- Fix singleton created with default values.
+- Added support for configuration sections.
+
 # 1.0.0 (2024-10-17)
 ## Changes
 - Initial package release.

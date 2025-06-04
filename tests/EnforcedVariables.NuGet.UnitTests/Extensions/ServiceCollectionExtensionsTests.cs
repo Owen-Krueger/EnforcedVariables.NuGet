@@ -17,6 +17,18 @@ public class ServiceCollectionExtensionsTests
         Assert.DoesNotThrow(() => services.AddEnforcedVariableClasses(configuration));
         var provider = services.BuildServiceProvider();
         Assert.DoesNotThrow(() => provider.GetRequiredService<TestModel>());
+        var variables = provider.GetRequiredService<TestModel>();
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(variables.UnNamedVariable, Is.EqualTo("UnNamedVariableValue"));
+            Assert.That(variables.NamedVariable, Is.EqualTo("DifferentName1Value"));
+            Assert.That(variables.VariableWithinSection, Is.EqualTo("SectionVariableValue"));
+            Assert.That(variables.VariableWithinDeepSection, Is.EqualTo("DeepSectionVariableValue"));
+            Assert.That(variables.IntegerValue, Is.EqualTo(42));
+        });
+
+        AssertVariableHasCorrectValues(variables, includeOptional);
     }
     
     [TestCase(true)]
@@ -29,6 +41,9 @@ public class ServiceCollectionExtensionsTests
         Assert.DoesNotThrow(() => services.AddEnforcedVariables<TestModel>(configuration));
         var provider = services.BuildServiceProvider();
         Assert.DoesNotThrow(() => provider.GetRequiredService<TestModel>());
+        var variables = provider.GetRequiredService<TestModel>();
+
+        AssertVariableHasCorrectValues(variables, includeOptional);
     }
     
     [TestCase(true)]
@@ -63,6 +78,9 @@ public class ServiceCollectionExtensionsTests
         Assert.DoesNotThrow(() => services.AddEnforcedVariables(configuration, typeof(TestModel)));
         var provider = services.BuildServiceProvider();
         Assert.DoesNotThrow(() => provider.GetRequiredService<TestModel>());
+        var variables = provider.GetRequiredService<TestModel>();
+
+        AssertVariableHasCorrectValues(variables, includeOptional);
     }
     
     [TestCase(true)]
@@ -100,11 +118,14 @@ public class ServiceCollectionExtensionsTests
     public void AddEnforcedVariables_EnforceAllChildrenProvided_NonTaggedChildrenEnforced()
     {
         var services = new ServiceCollection();
-        var configuration = ConfigurationHelper.GetConfiguration(false, true, true);
+        var configuration = ConfigurationHelper.GetConfiguration(true, true, true);
         
         Assert.DoesNotThrow(() => services.AddEnforcedVariables(configuration, typeof(TestModel2)));
         var provider = services.BuildServiceProvider();
         Assert.DoesNotThrow(() => provider.GetRequiredService<TestModel2>());
+        var variables = provider.GetRequiredService<TestModel2>();
+
+        AssertVariableHasCorrectValues(variables);
     }
     
     [Test]
@@ -116,5 +137,42 @@ public class ServiceCollectionExtensionsTests
         Assert.DoesNotThrow(() => services.AddEnforcedVariables(configuration, typeof(TestModel2)));
         var provider = services.BuildServiceProvider();
         Assert.Throws<InvalidOperationException>(() => provider.GetRequiredService<TestModel2>());
+    }
+
+    private static void AssertVariableHasCorrectValues(TestModel variables, bool includeOptional)
+    {
+        Assert.Multiple(() =>
+        {
+            Assert.That(variables.UnNamedVariable, Is.EqualTo("UnNamedVariableValue"));
+            Assert.That(variables.NamedVariable, Is.EqualTo("DifferentName1Value"));
+            Assert.That(variables.VariableWithinSection, Is.EqualTo("SectionVariableValue"));
+            Assert.That(variables.VariableWithinDeepSection, Is.EqualTo("DeepSectionVariableValue"));
+            Assert.That(variables.IntegerValue, Is.EqualTo(42));
+        });
+
+        Assert.Multiple(() =>
+        {
+            if (includeOptional)
+            {
+                Assert.That(variables.NotRequiredUnNamedVariable, Is.EqualTo("NotRequiredUnNamedVariableValue"));
+                Assert.That(variables.NotRequiredNamedVariable, Is.EqualTo("DifferentName2Value"));
+            }
+            else
+            {
+                Assert.That(variables.NotRequiredUnNamedVariable, Is.EqualTo(string.Empty));
+                Assert.That(variables.NotRequiredNamedVariable, Is.EqualTo(string.Empty));
+            }
+        });
+    }
+
+    private static void AssertVariableHasCorrectValues(TestModel2 variables)
+    {
+        Assert.Multiple(() =>
+        {
+            Assert.That(variables.NamedVariable, Is.EqualTo("DifferentName1Value"));
+            Assert.That(variables.VariableWithinSection, Is.EqualTo("SectionVariableValue"));
+            Assert.That(variables.VariableWithinDeepSection, Is.EqualTo("DeepSectionVariableValue"));
+            Assert.That(variables.IntegerValue, Is.EqualTo(42));
+        });
     }
 }

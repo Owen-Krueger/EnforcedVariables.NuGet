@@ -17,6 +17,15 @@ internal class TestModel
     [EnforcedVariable("DifferentName2", Required = false)]
     public string NotRequiredNamedVariable { get; set; } = string.Empty;
 
+    [EnforcedVariable("Section__Variable")]
+    public string VariableWithinSection { get; set; } = string.Empty;
+
+    [EnforcedVariable("Section__InnerSection__OneMoreSection__Variable")]
+    public string VariableWithinDeepSection { get; set; } = string.Empty;
+
+    [EnforcedVariable]
+    public int IntegerValue { get; set; }
+
     public string IgnoredProperty { get; set; } = string.Empty;
 }
 
@@ -27,4 +36,12 @@ internal class TestModel2
     public string NamedVariable { get; set; } = string.Empty;
 
     public string VariableEnforcedWithoutTag { get; set; } = string.Empty;
+
+    [EnforcedVariable("Section__Variable")]
+    public string VariableWithinSection { get; set; } = string.Empty;
+
+    [EnforcedVariable("Section__InnerSection__OneMoreSection__Variable")]
+    public string VariableWithinDeepSection { get; set; } = string.Empty;
+
+    public int IntegerValue { get; set; }
 }
