@@ -30,7 +30,7 @@ public static class EnforcedVariablesHealthCheckBuilder
         this IHealthChecksBuilder builder,
         string? name = null,
         HealthStatus failureStatus = default,
-        IEnumerable<string>? tags = default)
+        IEnumerable<string>? tags = null)
     {
         return builder.Add(new HealthCheckRegistration(
                 name ?? DefaultName,
