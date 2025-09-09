@@ -1,3 +1,7 @@
+# 1.2.0 (2025-09-08)
+- Generate XML documentation.
+- Upgrade packages to latest.
+
 # 1.1.0 (2025-06-04)
 ## Changes
 - Fix singleton created with default values.
