@@ -5,24 +5,25 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <RootNamespace>EnforcedVariables</RootNamespace>
-        <Version>1.1.0</Version>
+        <Version>1.2.0</Version>
         <Title>EnforcedVariables.NuGet</Title>
         <Authors>Owen Krueger</Authors>
         <Description>For enforcing variables are present and resolvable prior to starting up applications.</Description>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageProjectUrl>https://github.com/Owen-Krueger/EnforceVariables</PackageProjectUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageTags>Variables,Asp.Net,ServiceCollection,HealthCheck</PackageTags>
         <RepositoryUrl>https://github.com/Owen-Krueger/EnforceVariables</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
-        <PackageReleaseNotes>https://github.com/Owen-Krueger/EnforceVariables/releases/tag/v1.1.0</PackageReleaseNotes>
+        <PackageReleaseNotes>https://github.com/Owen-Krueger/EnforceVariables/releases/tag/v1.2.0</PackageReleaseNotes>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="8.0.16" />
+        <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="8.0.19" />
     </ItemGroup>
 
     <ItemGroup>
