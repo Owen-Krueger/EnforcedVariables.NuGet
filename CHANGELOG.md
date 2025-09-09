@@ -1,4 +1,5 @@
 # 1.2.0 (2025-09-08)
+## Changes
 - Generate XML documentation.
 - Upgrade packages to latest.
 
