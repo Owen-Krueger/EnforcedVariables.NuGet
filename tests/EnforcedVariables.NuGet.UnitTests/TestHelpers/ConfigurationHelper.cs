@@ -7,16 +7,16 @@ internal static class ConfigurationHelper
     internal static IConfiguration GetConfiguration(bool includeRequired, bool includeOptional, bool includeModel2Variables)
     {
         var environmentVariables = new Dictionary<string, string>();
-        
+
         if (includeRequired)
         {
             environmentVariables.Add("UnNamedVariable", "UnNamedVariableValue");
             environmentVariables.Add("DifferentName1", "DifferentName1Value");
             environmentVariables.Add("Section:Variable", "SectionVariableValue");
-            environmentVariables.Add("Section:InnerSection:OneMoreSection:Variable", "DeepSectionVariableValue");;
+            environmentVariables.Add("Section:InnerSection:OneMoreSection:Variable", "DeepSectionVariableValue");
             environmentVariables.Add("IntegerValue", "42");
         }
-        
+
         if (includeOptional)
         {
             environmentVariables.Add("NotRequiredUnNamedVariable", "NotRequiredUnNamedVariableValue");
@@ -28,8 +28,7 @@ internal static class ConfigurationHelper
             environmentVariables.Add("VariableEnforcedWithoutTag", "VariableEnforcedWithoutTagValue");
         }
 
-        return new ConfigurationBuilder()
-            .AddInMemoryCollection(environmentVariables!)
-            .Build();
+        return new ConfigurationBuilder().AddInMemoryCollection(environmentVariables!).Build();
     }
 }
+

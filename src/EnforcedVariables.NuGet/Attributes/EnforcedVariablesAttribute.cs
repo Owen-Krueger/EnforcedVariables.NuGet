@@ -11,7 +11,7 @@ public class EnforcedVariablesAttribute : Attribute
     /// <see cref="EnforcedVariableAttribute"/> attribute or not.
     /// </summary>
     public bool EnforceAllChildren { get; set; }
-    
+
     /// <summary>
     /// Instantiates a new <see cref="EnforcedVariablesAttribute"/> attribute.
     /// </summary>
@@ -27,3 +27,4 @@ public class EnforcedVariablesAttribute : Attribute
         EnforceAllChildren = enforceAllChildren;
     }
 }
+

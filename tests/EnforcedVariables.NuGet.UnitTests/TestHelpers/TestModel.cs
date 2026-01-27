@@ -45,3 +45,4 @@ internal class TestModel2
 
     public int IntegerValue { get; set; }
 }
+

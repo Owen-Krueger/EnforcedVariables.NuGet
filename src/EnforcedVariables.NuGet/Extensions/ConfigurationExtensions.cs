@@ -19,8 +19,8 @@ public static class ConfigurationExtensions
     /// <exception cref="MissingVariablesException">
     /// Indicates any missing variables not found in the <see cref="IConfiguration"/>.
     /// </exception>
-    public static void EnforceVariables<TClass>(this IConfiguration configuration)
-        => EnforcedVariableUtilities.EnforceVariables(new ServiceCollection(), configuration, typeof(TClass), true, false);
+    public static void EnforceVariables<TClass>(this IConfiguration configuration) =>
+        EnforcedVariableUtilities.EnforceVariables(new ServiceCollection(), configuration, typeof(TClass), true, false);
 
     /// <summary>
     /// Ensures all variables are present in the <see cref="IConfiguration"/>. Throws an
@@ -28,6 +28,6 @@ public static class ConfigurationExtensions
     /// </summary>
     /// <param name="configuration">The configuration containing the variables to check for.</param>
     /// <param name="classType">The class containing variables (properties) to verify.</param>
-    public static void EnforceVariables(this IConfiguration configuration, Type classType)
-        => EnforcedVariableUtilities.EnforceVariables(new ServiceCollection(), configuration, classType, true, false);
+    public static void EnforceVariables(this IConfiguration configuration, Type classType) =>
+        EnforcedVariableUtilities.EnforceVariables(new ServiceCollection(), configuration, classType, true, false);
 }

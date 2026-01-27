@@ -15,7 +15,7 @@ public static class ServiceCollectionExtensions
     /// <summary>
     /// Adds any classes decorated with <see cref="EnforcedVariablesAttribute"/> to the
     /// <see cref="IServiceCollection"/>, ensuring all variables (properties) are present and resolvable.
-    /// Throws a <see cref="MissingVariablesException"/> if any variables are missing and <see cref="throwOnMissing"/>
+    /// Throws a <see cref="MissingVariablesException"/> if any variables are missing and <see paramref="throwOnMissing"/>
     /// is true.
     /// </summary>
     /// <param name="services">The service collection to add variable classes to.</param>
@@ -25,11 +25,14 @@ public static class ServiceCollectionExtensions
     /// </param>
     /// <returns>The updated <see cref="IServiceCollection"/>.</returns>
     /// <exception cref="MissingVariablesException">
-    /// Indicates any missing variables not found in the <see cref="IConfiguration"/>
-    /// (if <see cref="throwOnMissing"/> is true).
+    /// Indicates any missing variables not found in the <see paramref="IConfiguration"/>
+    /// (if <see paramref="throwOnMissing"/> is true).
     /// </exception>
-    public static IServiceCollection AddEnforcedVariableClasses(this IServiceCollection services,
-        IConfiguration configuration, bool throwOnMissing = false)
+    public static IServiceCollection AddEnforcedVariableClasses(
+        this IServiceCollection services,
+        IConfiguration configuration,
+        bool throwOnMissing = false
+    )
     {
         var assembly = Assembly.GetCallingAssembly();
         foreach (var type in assembly.GetEnforcedVariablesClasses())
@@ -39,34 +42,38 @@ public static class ServiceCollectionExtensions
 
         return services;
     }
-    
+
     /// <summary>
-    /// Ensures all variables are present in the <see cref="IConfiguration"/>. Adds the <see cref="TClass"/> to the
-    /// <see cref="IServiceCollection"/> as a singleton if all variables are present. If <see cref="throwOnMissing"/>
+    /// Ensures all variables are present in the <see cref="IConfiguration"/>. Adds the <see paramref="TClass"/> to the
+    /// <see cref="IServiceCollection"/> as a singleton if all variables are present. If <see paramref="throwOnMissing"/>
     /// is true, throws an <see cref="MissingVariablesException"/> if any variables are missing.
     /// </summary>
     /// <param name="services">
-    /// The service collection to add the <see cref="TClass"/> to.
+    /// The service collection to add the <see paramref="TClass"/> to.
     /// </param>
     /// <param name="configuration">The configuration containing the variables to check for.</param>
     /// <param name="throwOnMissing"></param>
     /// <typeparam name="TClass">The class containing variables (properties) to verify.</typeparam>
     /// <returns>The updated <see cref="IServiceCollection"/>.</returns>
     /// <exception cref="MissingVariablesException">
-    /// Indicates any missing variables not found in the <see cref="IConfiguration"/> (if <see cref="throwOnMissing"/>
+    /// Indicates any missing variables not found in the <see cref="IConfiguration"/> (if <see paramref="throwOnMissing"/>
     /// is true).
     /// </exception>
-    public static IServiceCollection AddEnforcedVariables<TClass>(this IServiceCollection services, 
-        IConfiguration configuration, bool throwOnMissing = false) where TClass : class, new() =>
-            EnforcedVariableUtilities.EnforceVariables(services, configuration, typeof(TClass), throwOnMissing, true);
+    public static IServiceCollection AddEnforcedVariables<TClass>(
+        this IServiceCollection services,
+        IConfiguration configuration,
+        bool throwOnMissing = false
+    )
+        where TClass : class, new() =>
+        EnforcedVariableUtilities.EnforceVariables(services, configuration, typeof(TClass), throwOnMissing, true);
 
     /// <summary>
-    /// Ensures all variables are present in the <see cref="IConfiguration"/>. Adds the <see cref="classType"/> to the
-    /// <see cref="IServiceCollection"/> as a singleton if all variables are present. If <see cref="throwOnMissing"/>
+    /// Ensures all variables are present in the <see cref="IConfiguration"/>. Adds the <see paramref="classType"/> to the
+    /// <see cref="IServiceCollection"/> as a singleton if all variables are present. If <see paramref="throwOnMissing"/>
     /// is true, throws an <see cref="MissingVariablesException"/> if any variables are missing.
     /// </summary>
     /// <param name="services">
-    /// The service collection to add the <see cref="classType"/> to.
+    /// The service collection to add the <see paramref="classType"/> to.
     /// </param>
     /// <param name="configuration">The configuration containing the variables to check for.</param>
     /// <param name="classType">The class containing variables (properties) to verify.</param>
@@ -75,10 +82,13 @@ public static class ServiceCollectionExtensions
     /// </param>
     /// <returns>The updated <see cref="IServiceCollection"/>.</returns>
     /// <exception cref="MissingVariablesException">
-    /// Indicates any missing variables not found in the <see cref="IConfiguration"/> (if <see cref="throwOnMissing"/>
+    /// Indicates any missing variables not found in the <see cref="IConfiguration"/> (if <see paramref="throwOnMissing"/>
     /// is true).
     /// </exception>
-    public static IServiceCollection AddEnforcedVariables(this IServiceCollection services, IConfiguration configuration,
-        Type classType, bool throwOnMissing = false) => 
-        EnforcedVariableUtilities.EnforceVariables(services, configuration, classType, throwOnMissing, true);
+    public static IServiceCollection AddEnforcedVariables(
+        this IServiceCollection services,
+        IConfiguration configuration,
+        Type classType,
+        bool throwOnMissing = false
+    ) => EnforcedVariableUtilities.EnforceVariables(services, configuration, classType, throwOnMissing, true);
 }

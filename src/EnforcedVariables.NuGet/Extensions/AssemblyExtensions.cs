@@ -16,6 +16,6 @@ internal static class AssemblyExtensions
     {
         var types = assembly.GetTypes();
 
-        return types.Where(x => x.IsEnforcedVariablesClass()).ToArray();
+        return [.. types.Where(x => x.IsEnforcedVariablesClass())];
     }
 }

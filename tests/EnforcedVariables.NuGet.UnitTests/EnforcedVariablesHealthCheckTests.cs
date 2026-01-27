@@ -18,10 +18,10 @@ public class EnforcedVariablesHealthCheckTests
 
         var healthCheck = new EnforcedVariablesHealthCheck(provider);
         var result = await healthCheck.CheckHealthAsync(new HealthCheckContext());
-        
+
         Assert.That(result.Status, Is.EqualTo(HealthStatus.Healthy));
     }
-    
+
     [Test]
     public async Task EnforcedVariablesHealthCheck_VariablesMissing_Unhealthy()
     {
@@ -32,7 +32,8 @@ public class EnforcedVariablesHealthCheckTests
 
         var healthCheck = new EnforcedVariablesHealthCheck(provider);
         var result = await healthCheck.CheckHealthAsync(new HealthCheckContext());
-        
+
         Assert.That(result.Status, Is.EqualTo(HealthStatus.Unhealthy));
     }
 }
+

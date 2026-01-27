@@ -16,12 +16,12 @@ public class EnforcedVariableAttribute : Attribute
     /// Whether the variable is required prior to application startup. Defaults to true.
     /// </summary>
     public bool Required { get; set; } = true;
-    
+
     /// <summary>
     /// Instantiates a new <see cref="EnforcedVariableAttribute"/> attribute.
     /// </summary>
-    public EnforcedVariableAttribute() {}
-    
+    public EnforcedVariableAttribute() { }
+
     /// <summary>
     /// Instantiates a new <see cref="EnforcedVariablesAttribute"/> attribute, with the name of a variable.
     /// </summary>
@@ -30,3 +30,4 @@ public class EnforcedVariableAttribute : Attribute
         Name = name;
     }
 }
+

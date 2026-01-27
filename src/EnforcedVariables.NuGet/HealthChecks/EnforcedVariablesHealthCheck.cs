@@ -30,13 +30,12 @@ public static class EnforcedVariablesHealthCheckBuilder
         this IHealthChecksBuilder builder,
         string? name = null,
         HealthStatus failureStatus = default,
-        IEnumerable<string>? tags = null)
+        IEnumerable<string>? tags = null
+    )
     {
-        return builder.Add(new HealthCheckRegistration(
-                name ?? DefaultName,
-                sp => new EnforcedVariablesHealthCheck(sp),
-            failureStatus,
-            tags));
+        return builder.Add(
+            new HealthCheckRegistration(name ?? DefaultName, sp => new EnforcedVariablesHealthCheck(sp), failureStatus, tags)
+        );
     }
 }
 
@@ -57,13 +56,14 @@ public class EnforcedVariablesHealthCheck(IServiceProvider serviceProvider) : IH
     public Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = new())
     {
         var assembly = Assembly.GetCallingAssembly();
-        var missingClasses = assembly.GetEnforcedVariablesClasses()
-            .Where(type => serviceProvider.GetService(type) is null)
-            .ToList();
-        
-        return Task.FromResult(missingClasses.Count == 0 ? 
-            HealthCheckResult.Healthy("Variables present.") :
-            HealthCheckResult.Unhealthy($"Following classes are not present in ServiceProvider: {string.Join(',', missingClasses.Select(x => x.Name))}"));
+        var missingClasses = assembly.GetEnforcedVariablesClasses().Where(type => serviceProvider.GetService(type) is null).ToList();
 
+        return Task.FromResult(
+            missingClasses.Count == 0
+                ? HealthCheckResult.Healthy("Variables present.")
+                : HealthCheckResult.Unhealthy(
+                    $"Following classes are not present in ServiceProvider: {string.Join(',', missingClasses.Select(x => x.Name))}"
+                )
+        );
     }
 }

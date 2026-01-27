@@ -18,17 +18,17 @@ public class MissingVariablesExceptionTests
         var exception = new MissingVariablesException(message);
         Assert.That(exception.Message, Is.EqualTo(message));
     }
-    
+
     [Test]
     public void Constructor_InnerExceptionProvided_MessageUtilized()
     {
         const string message = "Exception thrown.";
         var exception = new MissingVariablesException(message, new Exception());
-        Assert.Multiple(() =>
+        using (Assert.EnterMultipleScope())
         {
             Assert.That(exception.Message, Is.EqualTo(message));
             Assert.That(exception.InnerException, Is.TypeOf<Exception>());
-        });
+        }
     }
 
     [Test]
@@ -39,3 +39,4 @@ public class MissingVariablesExceptionTests
         Assert.That(exception.Message, Is.EqualTo("The following variables are missing: VariableA, VariableB"));
     }
 }
+
